@@ -61,7 +61,69 @@ const vagas = [
   ),
 ];
 
-// Teste rápido para ver se está funcionando no console
-console.log("=== Teste de Estrutura ===");
-console.log("Candidato:", candidato.nome);
-console.log("Resumo da Vaga 1:", vagas[0].exibirDetalhesDaVaga());
+const obterHabilidadesFaltantes = (requisitosVaga, habilidadesCandidato) => {
+  return requisitosVaga.filter(requisito => !habilidadesCandidato.includes(requisito));
+};
+
+const classificarCompatibilidade = (percentual) => {
+  if (percentual >= 80) {
+    return "Alta compatibilidade";
+  } else if (percentual >= 50) {
+    return "Média compatibilidade";
+  } else {
+    return "Baixa compatibilidade";
+  }
+};
+
+const processarAnaliseVagas = (candidatoObj, listaVagas) => {
+  return listaVagas.map(vaga => {
+    const faltantes = obterHabilidadesFaltantes(vaga.requisitos, candidatoObj.habilidades);
+    const qtdAtendidas = vaga.requisitos.length - faltantes.length;
+    
+    // RF03 - Cálculo da compatibilidade
+    const percentual = Math.round((qtdAtendidas / vaga.requisitos.length) * 100);
+    
+    return {
+      vagaInfo: vaga,
+      empresa: vaga.empresa,
+      cargo: vaga.cargo,
+      compatibilidade: percentual,
+      classificacao: classificarCompatibilidade(percentual),
+      faltantes: faltantes
+    };
+  });
+};
+
+const encontrarMelhorVaga = (resultadosAnalise) => {
+  return resultadosAnalise.reduce((melhor, atual) => {
+    return (atual.compatibilidade > melhor.compatibilidade) ? atual : melhor;
+  });
+};
+
+const gerarRecomendacaoEstudo = (resultadosAnalise) => {
+  const todasFaltantes = resultadosAnalise.reduce((acumulador, resultado) => {
+    resultado.faltantes.forEach(hab => {
+      if (!acumulador.includes(hab)) {
+        acumulador.push(hab);
+      }
+    });
+    return acumulador;
+  }, []);
+
+  if (todasFaltantes.length === 0) {
+    return "Parabéns! Você atende a todos os requisitos destas vagas.";
+  }
+
+  return `Priorize estudar: ${todasFaltantes.join(", ")}, pois esses conteúdos aparecem nas vagas analisadas.`;
+};
+
+const resultados = processarAnaliseVagas(candidato, vagas);
+const melhorVaga = encontrarMelhorVaga(resultados);
+
+console.log("=== Resultados da Análise ===");
+console.log(resultados);
+console.log("=== Melhor Vaga Encontrada ===");
+console.log(`Vaga mais compatível: ${melhorVaga.empresa} - ${melhorVaga.cargo}`);
+console.log(`Compatibilidade: ${melhorVaga.compatibilidade}%`);
+console.log("=== Recomendação ===");
+console.log(gerarRecomendacaoEstudo(resultados));
