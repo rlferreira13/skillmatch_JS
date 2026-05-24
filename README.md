@@ -7,7 +7,7 @@ O SkillMatch JS é um simulador de compatibilidade entre um candidato e vagas de
 ### Links do Projeto
 - **Repositório GitHub:** https://github.com/rlferreira13/skillmatch_JS
 - **Quadro Kanban:** https://github.com/users/rlferreira13/projects/2
-- **Apresentação em Vídeo:** 
+- **Apresentação em Vídeo:** https://youtu.be/tdnwfbOmhTQ
 
 ---
 
