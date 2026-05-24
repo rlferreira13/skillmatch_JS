@@ -167,7 +167,7 @@ const iniciarSistema = async () => {
 
     const resultados = processarAnaliseVagas(candidato, vagasCarregadas);
     const melhorVaga = encontrarMelhorVaga(resultados);
-
+f
     console.log("==========================================");
     console.log("          RESULTADOS DA ANÁLISE           ");
     console.log("==========================================");
